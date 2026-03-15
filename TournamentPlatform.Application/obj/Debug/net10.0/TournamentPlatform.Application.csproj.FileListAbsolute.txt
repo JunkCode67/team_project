@@ -1,0 +1,15 @@
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/bin/Debug/net10.0/TournamentPlatform.Application.deps.json
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/bin/Debug/net10.0/TournamentPlatform.Application.dll
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/bin/Debug/net10.0/TournamentPlatform.Application.pdb
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/bin/Debug/net10.0/TournamentPlatform.Domain.dll
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/bin/Debug/net10.0/TournamentPlatform.Domain.pdb
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.csproj.AssemblyReference.cache
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.AssemblyInfoInputs.cache
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.AssemblyInfo.cs
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.csproj.CoreCompileInputs.cache
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/Tourname.01A32F01.Up2Date
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.dll
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/refint/TournamentPlatform.Application.dll
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/TournamentPlatform.Application.pdb
+/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/Debug/net10.0/ref/TournamentPlatform.Application.dll
