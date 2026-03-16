@@ -1,5 +1,6 @@
-using TournamentPlatform.Application.DTOs.Tournament;
+using TournamentPlatform.Application.DTO.Tournament;
 using TournamentPlatform.Domain.Enums;
+
 
 namespace TournamentPlatform.Application.Interfaces;
 

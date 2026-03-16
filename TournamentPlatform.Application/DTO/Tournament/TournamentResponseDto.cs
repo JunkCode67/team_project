@@ -1,7 +1,6 @@
 using TournamentPlatform.Domain.Enums;
-
-namespace TournamentPlatform.Application.DTOs.Tournament;
-
+namespace TournamentPlatform.Application.DTO.Tournament;
+using TournamentPlatform.Domain.Entities;
 public class TournamentResponseDto
 {
     public Guid Id { get; set; }

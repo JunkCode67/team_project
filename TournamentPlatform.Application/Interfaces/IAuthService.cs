@@ -1,4 +1,4 @@
-using TournamentPlatform.Application.DTOs.Auth;
+using TournamentPlatform.Application.DTO.Auth;
 
 namespace TournamentPlatform.Application.Interfaces;
 

@@ -1,7 +1,7 @@
 using System;
 using TournamentPlatform.Domain.Enums;
 
-namespace TournamentPlatform.Application.DTO.Submission; // Переконайтеся, що namespace ваш
+namespace TournamentPlatform.Application.DTO.Submission;
 
 public class SubmissionResponseDto
 {

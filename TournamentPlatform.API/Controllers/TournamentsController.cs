@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TournamentPlatform.Application.DTOs.Tournament;
+using TournamentPlatform.Application.DTO.Tournament;
 using TournamentPlatform.Application.Interfaces;
 using TournamentPlatform.Domain.Enums;
 
@@ -8,7 +8,7 @@ namespace TournamentPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class TournamentsController : ControllerBase
 {
     private readonly ITournamentService _tournamentService;

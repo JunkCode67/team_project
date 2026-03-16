@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using TournamentPlatform.Application.DTOs.Auth;
+using TournamentPlatform.Application.DTO.Auth;
 using TournamentPlatform.Application.Interfaces;
 using TournamentPlatform.Domain.Entities;
 using TournamentPlatform.Domain.Enums;

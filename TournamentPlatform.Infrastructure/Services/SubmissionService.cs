@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using TournamentPlatform.Application.DTO;
 using TournamentPlatform.Application.DTO.Submission;
-using TournamentPlatform.Application.DTOs;
 using TournamentPlatform.Application.Interfaces;
 using TournamentPlatform.Domain.Entities;
 using TournamentPlatform.Domain.Enums;
@@ -47,7 +47,7 @@ public class SubmissionService : ISubmissionService
             LiveDemoUrl = dto.LiveDemoUrl,
             Description = dto.Description,
             Status = SubmissionStatus.Submitted,
-            Submitted = DateTime.UtcNow
+            SubmittedAt = DateTime.UtcNow
         };
 
         await _uow.Submissions.AddAsync(submission);
@@ -100,14 +100,17 @@ public class SubmissionService : ISubmissionService
         await _uow.SaveChangesAsync();
     }
 
-    public Task<SubmissionResponseDto?> GetByIdAsync(Guid id)
+    public async Task<SubmissionResponseDto?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var submission = await _uow.Submissions.GetByIdAsync(id);
+        return submission == null ? null : await MapToDto(submission);
     }
 
-    public Task<SubmissionResponseDto?> GetByTeamAndRoundAsync(Guid teamId, Guid roundId)
+    public async Task<SubmissionResponseDto?> GetByTeamAndRoundAsync(Guid teamId, Guid roundId)
     {
-        throw new NotImplementedException();
+        var submission = await _uow.Submissions
+            .GetByTeamAndRoundAsync(teamId, roundId);
+        return submission == null ? null : await MapToDto(submission);
     }
 
     private async Task<SubmissionResponseDto> MapToDto(Submission s)
@@ -124,7 +127,7 @@ public class SubmissionService : ISubmissionService
             LiveDemoUrl = s.LiveDemoUrl,
             Description = s.Description,
             Status = s.Status,
-            SubmittedAt = s.Submitted
+            SubmittedAt = s.SubmittedAt
         };
     }
 }

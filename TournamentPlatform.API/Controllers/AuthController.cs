@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TournamentPlatform.Application.DTOs.Auth;
+using TournamentPlatform.Application.DTO.Auth;
 using TournamentPlatform.Application.Interfaces;
 
 namespace TournamentPlatform.API.Controllers;

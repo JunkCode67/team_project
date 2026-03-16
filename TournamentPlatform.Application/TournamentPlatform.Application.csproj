@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TournamentPlatform.Domain\TournamentPlatform.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
@@ -19,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+      <ProjectReference Include="..\TournamentPlatform.Domain\TournamentPlatform.Domain.csproj" />
     </ItemGroup>
 
 </Project>

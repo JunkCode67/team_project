@@ -1,4 +1,4 @@
-namespace TournamentPlatform.Application.DTOs.Auth;
+namespace TournamentPlatform.Application.DTO.Auth;
 
 public class AuthResponseDto
 {

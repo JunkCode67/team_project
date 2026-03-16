@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentPlatform.API", "TournamentPlatform.API\TournamentPlatform.API.csproj", "{7B133346-DACF-46D5-A4BC-FE4F171A128A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentPlatform.Application", "TournamentPlatform.Application\TournamentPlatform.Application.csproj", "{5F82A4D4-85F6-448F-A4BB-5A7DABD771A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentPlatform.Infrastructure", "TournamentPlatform.Infrastructure\TournamentPlatform.Infrastructure.csproj", "{51E05558-8097-4AE4-AA41-B14DC0AE0CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentPlatform.Domain", "TournamentPlatform.Domain\TournamentPlatform.Domain.csproj", "{EBD24F6B-F10C-47FE-9FBB-2D4CA34B00D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B133346-DACF-46D5-A4BC-FE4F171A128A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B133346-DACF-46D5-A4BC-FE4F171A128A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B133346-DACF-46D5-A4BC-FE4F171A128A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B133346-DACF-46D5-A4BC-FE4F171A128A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F82A4D4-85F6-448F-A4BB-5A7DABD771A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F82A4D4-85F6-448F-A4BB-5A7DABD771A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F82A4D4-85F6-448F-A4BB-5A7DABD771A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F82A4D4-85F6-448F-A4BB-5A7DABD771A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E05558-8097-4AE4-AA41-B14DC0AE0CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E05558-8097-4AE4-AA41-B14DC0AE0CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E05558-8097-4AE4-AA41-B14DC0AE0CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E05558-8097-4AE4-AA41-B14DC0AE0CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD24F6B-F10C-47FE-9FBB-2D4CA34B00D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD24F6B-F10C-47FE-9FBB-2D4CA34B00D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD24F6B-F10C-47FE-9FBB-2D4CA34B00D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD24F6B-F10C-47FE-9FBB-2D4CA34B00D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

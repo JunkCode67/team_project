@@ -1,4 +1,4 @@
-namespace TournamentPlatform.Application.DTOs;
+namespace TournamentPlatform.Application.DTO;
 
 public class CreateSubmissionDto
 {
