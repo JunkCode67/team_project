@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj": {}
+    "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj": {}
   },
   "projects": {
-    "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/TournamentPlatform.Application.csproj": {
+    "/Users/tyvanukmax/team_project/TournamentPlatform.Application/TournamentPlatform.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/TournamentPlatform.Application.csproj",
+        "projectUniqueName": "/Users/tyvanukmax/team_project/TournamentPlatform.Application/TournamentPlatform.Application.csproj",
         "projectName": "TournamentPlatform.Application",
-        "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/TournamentPlatform.Application.csproj",
+        "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Application/TournamentPlatform.Application.csproj",
         "packagesPath": "/Users/tyvanukmax/.nuget/packages/",
-        "outputPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/obj/",
+        "outputPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tyvanukmax/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
-                "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj"
+              "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
+                "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj"
               }
             }
           }
@@ -363,14 +363,14 @@
         }
       }
     },
-    "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
+    "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj",
+        "projectUniqueName": "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj",
         "projectName": "TournamentPlatform.Domain",
-        "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj",
+        "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj",
         "packagesPath": "/Users/tyvanukmax/.nuget/packages/",
-        "outputPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/obj/",
+        "outputPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tyvanukmax/.nuget/NuGet/NuGet.Config"
@@ -696,14 +696,14 @@
         }
       }
     },
-    "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj": {
+    "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
+        "projectUniqueName": "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
         "projectName": "TournamentPlatform.Infrastructure",
-        "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
+        "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
         "packagesPath": "/Users/tyvanukmax/.nuget/packages/",
-        "outputPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/obj/",
+        "outputPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tyvanukmax/.nuget/NuGet/NuGet.Config"
@@ -718,11 +718,11 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/TournamentPlatform.Application.csproj": {
-                "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Application/TournamentPlatform.Application.csproj"
+              "/Users/tyvanukmax/team_project/TournamentPlatform.Application/TournamentPlatform.Application.csproj": {
+                "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Application/TournamentPlatform.Application.csproj"
               },
-              "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
-                "projectPath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj"
+              "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj": {
+                "projectPath": "/Users/tyvanukmax/team_project/TournamentPlatform.Domain/TournamentPlatform.Domain.csproj"
               }
             }
           }

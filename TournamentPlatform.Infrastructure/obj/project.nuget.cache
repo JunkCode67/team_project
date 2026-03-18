@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6NpRfB6Y16E=",
+  "dgSpecHash": "oPm/CdwEeW8=",
   "success": true,
-  "projectFilePath": "/Users/tyvanukmax/RiderProjects/TournamentPlatform/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
+  "projectFilePath": "/Users/tyvanukmax/team_project/TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.csproj",
   "expectedPackageFiles": [
     "/Users/tyvanukmax/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512",
     "/Users/tyvanukmax/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
