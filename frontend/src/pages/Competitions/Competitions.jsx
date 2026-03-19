@@ -1,6 +1,6 @@
-import styles from '../App.module.css';
-import FilterTabs from '../components/FilterTabs/FilterTabs';
-import CompetitionCard from '../components/CompetitionCard/CompetitionCard';
+import styles from '../../App.module.css';
+import FilterTabs from '../../components/FilterTabs/FilterTabs';
+import CompetitionCard from '../../components/CompetitionCard/CompetitionCard';
 
 function Competitions() {
   return (

@@ -38,8 +38,9 @@ function Sidebar() {
         <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '24px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Management
         </div>
-        <a href="#" className={styles.navItem}>⚖️ Jury Dashboard</a>
-        <a href="#" className={styles.navItem}>⚙️ Admin Panel</a>
+
+        <Link to="/jury" className={styles.navItem}>⚖️ Jury Dashboard</Link>
+        <Link to="/admin" className={styles.navItem}>⚙️ Admin Panel</Link>
       </nav>
       
     </div>

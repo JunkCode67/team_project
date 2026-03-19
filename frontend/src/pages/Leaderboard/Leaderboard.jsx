@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Leaderboard.module.css';
-import appStyles from '../App.module.css';
+import appStyles from '../../App.module.css';
 
 // Временные данные (потом это прилетит по API от бэкендеров)
 const MOCK_TEAMS = [

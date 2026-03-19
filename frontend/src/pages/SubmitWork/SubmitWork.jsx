@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './SubmitWork.module.css';
-import appStyles from '../App.module.css';
+import appStyles from '../../App.module.css';
 
 function SubmitWork() {
   // Состояния для хранения того, что юзер ввел в поля
