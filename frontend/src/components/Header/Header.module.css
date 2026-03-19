@@ -1,0 +1,79 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.searchWrapper {
+  flex: 1;
+  max-width: 768px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  color: #6b7280;
+  width: 20px;
+  height: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 16px 10px 48px;
+  background-color: #f3f4f6;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  color: #111827;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Эффект при клике на строку поиска */
+.searchInput:focus {
+  background-color: white;
+  border-color: #d1d5db;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Легкое синее свечение */
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: 24px;
+}
+
+.signInBtn {
+  background: none;
+  border: none;
+  color: #374151;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signInBtn:hover {
+  color: black;
+}
+
+.registerBtn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.registerBtn:hover {
+  background-color: #1f2937;
+}
