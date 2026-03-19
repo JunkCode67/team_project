@@ -7,6 +7,7 @@ import Leaderboard from './pages/Leaderboard/Leaderboard';
 import SubmitWork from './pages/SubmitWork/SubmitWork';
 import JuryDashboard from './pages/JuryDashboard/JuryDashboard';
 import AdminPanel  from './pages/AdminPanel/AdminPanel';
+import Login from './pages/Login/Login';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/submit" element={<SubmitWork />} />
             <Route path="/jury" element={<JuryDashboard />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
           
         </div>

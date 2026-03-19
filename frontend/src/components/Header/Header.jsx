@@ -1,4 +1,5 @@
 import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
@@ -19,7 +20,7 @@ function Header() {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.signInBtn}>Sign In</button>
+        <Link to="/login" className={styles.signInBtn}>Sign In</Link>
         <button className={styles.registerBtn}>Register</button>
       </div>
       
