@@ -173,14 +173,18 @@ public class EvaluationService : IEvaluationService
     return leaderboard.OrderByDescending(x => x.AverageScore).ToList();
 }
 
-    public Task<Evaluation?> GetByJuryAndSubmissionAsync(Guid juryId, Guid submissionId)
+    public async Task<Evaluation?> GetByJuryAndSubmissionAsync(Guid juryId, Guid submissionId)
     {
-        throw new NotImplementedException();
+        return await _uow.Evaluations.GetByJuryAndSubmissionAsync(juryId, submissionId);
     }
 
-    public Task<IEnumerable<EvaluationResponseDto>> GetEvaluationsBySubmissionIdAsync(Guid submissionId)
+    public async Task<IEnumerable<EvaluationResponseDto>> GetEvaluationsBySubmissionIdAsync(Guid submissionId)
     {
-        throw new NotImplementedException();
+        var evaluations = await _uow.Evaluations.GetBySubmissionIdAsync(submissionId);
+        var result = new List<EvaluationResponseDto>();
+        foreach (var e in evaluations)
+            result.Add(await MapToDto(e));
+        return result;
     }
 
     private async Task<EvaluationResponseDto> MapToDto(Evaluation e)
