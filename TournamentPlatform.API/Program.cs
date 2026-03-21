@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // 1. Додаємо кнопку "Authorize" (Замочок)
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Вставте ваш JWT токен сюди (слово Bearer писати НЕ ТРЕБА)",
@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer"
     });
 
-    // 2. Кажемо Swagger-у прикріплювати цей токен до кожного запиту
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
