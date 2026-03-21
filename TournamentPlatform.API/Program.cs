@@ -67,12 +67,10 @@ builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IEvaluationService, EvaluationService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 var app = builder.Build();
+
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tournament Platform API V1");
-    c.RoutePrefix = string.Empty; // Це зробить Swagger головною сторінкою!
-});
+app.UseSwaggerUI();
+
 
 
 //app.UseHttpsRedirection();
