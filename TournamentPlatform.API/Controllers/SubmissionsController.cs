@@ -20,16 +20,26 @@ public class SubmissionsController : ControllerBase
     }
 
     [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> CreateSubmission([FromBody] CreateSubmissionDto dto)
     {
+        // 1. Читаємо токен і витягуємо ID юзера
+        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    
+        // 2. Якщо токена немає, або він кривий - кажемо "До побачення"
+        if (!Guid.TryParse(userIdString, out Guid currentUserId))
+        {
+            return Unauthorized(new { message = "Не вдалося ідентифікувати користувача з токена." });
+        }
+
         try
         {
-            var result = await _submissionService.SubmitAsync(dto);
+            // 3. Тепер передаємо ОБИДВА параметри: і дані (dto), і ID юзера (currentUserId)
+            var result = await _submissionService.SubmitAsync(dto, currentUserId);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            // Якщо раунд не знайдено або дедлайн минув, повертаємо помилку 400 (Bad Request)
             return BadRequest(new { message = ex.Message });
         }
     }

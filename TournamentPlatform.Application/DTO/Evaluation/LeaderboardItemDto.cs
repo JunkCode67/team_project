@@ -1,16 +1,15 @@
-using System;
-
 namespace TournamentPlatform.Application.DTO.Evaluation;
 
-public class LeaderboardItemDto
+public class LeaderBoardItemDto
 {
     public Guid TeamId { get; set; }
     public string TeamName { get; set; } = string.Empty;
-    public double AverageScore { get; set; }
+    public Guid SubmissionId { get; set; }
+    public int AverageScore { get; set; }
     public int TotalEvaluations { get; set; }
-    public double ScoreBackend { get; set; }
-    public double ScoreDatabase { get; set; }
-    public double ScoreFrontend { get; set; }
-    public double ScoreFunctionality { get; set; }
-    public double ScoreUsability { get; set; }
+    public int ScoreBackend { get; set; }
+    public int ScoreDatabase { get; set; }
+    public int ScoreFrontend { get; set; }
+    public int ScoreFunctionality { get; set; }
+    public int ScoreUsability { get; set; }
 }

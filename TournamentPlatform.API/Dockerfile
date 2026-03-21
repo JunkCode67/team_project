@@ -1,8 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["TournamentPlatform.API/TournamentPlatform.API.csproj", "TournamentPlatform.API/"]
 COPY ["TournamentPlatform.Application/TournamentPlatform.Application.csproj", "TournamentPlatform.Application/"]
@@ -11,12 +14,13 @@ COPY ["TournamentPlatform.Infrastructure/TournamentPlatform.Infrastructure.cspro
 RUN dotnet restore "TournamentPlatform.API/TournamentPlatform.API.csproj"
 COPY . .
 WORKDIR "/src/TournamentPlatform.API"
-RUN dotnet build "TournamentPlatform.API.csproj" -c Release -o /app/build
+RUN dotnet build "./TournamentPlatform.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "TournamentPlatform.API.csproj" -c Release -o /app/publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./TournamentPlatform.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TournamentPlatform.API.dll"]

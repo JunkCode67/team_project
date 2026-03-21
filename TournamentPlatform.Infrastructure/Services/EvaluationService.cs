@@ -19,72 +19,84 @@ public class EvaluationService : IEvaluationService
         _context = context;
     }
 
-    public async Task AssignSubmissionsAsync(Guid roundId, int submissionsPerJury = 3)
+    public async Task AssignSubmissionsAsync(Guid roundId, int submissionsPerJury)
     {
-        var submissions = await _uow.Submissions.GetByRoundIdAsync(roundId);
-        var submissionList = submissions.ToList();
-
-        var juryMembers = await _context.Users
-            .Where(u => u.Role == UserRole.Jury)
+        // 1. Беремо всі роботи цього раунду, які ще не мають оцінок
+        var submissions = await _context.Submissions
+            .Where(s => s.RoundId == roundId)
             .ToListAsync();
 
-        if (!juryMembers.Any())
-            throw new Exception("Немає членів журі");
+        // 2. Беремо всіх активних суддів
+        var juries = await _context.Users
+            .Where(u => u.Role == UserRole.Jury) // Перевір, як у тебе називається роль в Enum
+            .ToListAsync();
+
+        if (!juries.Any()) throw new Exception("У системі немає зареєстрованих суддів!");
+        if (!submissions.Any()) throw new Exception("Для цього раунду ще не подано жодної роботи.");
 
         var random = new Random();
+        var shuffledSubmissions = submissions.OrderBy(x => random.Next()).ToList();
 
-        foreach (var jury in juryMembers)
+        int juryIndex = 0;
+
+        // 3. Розподіляємо (спрощена логіка: кожен суддя отримує наступну роботу по черзі)
+        foreach (var submission in shuffledSubmissions)
         {
-            var shuffled = submissionList
-                .OrderBy(_ => random.Next())
-                .Take(submissionsPerJury)
-                .ToList();
+            // Перевіряємо, чи ця робота вже не призначена цьому судді (щоб не було дублів)
+            var alreadyAssigned = await _context.Evaluations
+                .AnyAsync(e => e.SubmissionId == submission.Id && e.JuryId == juries[juryIndex].Id);
 
-            foreach (var submission in shuffled)
+            if (!alreadyAssigned)
             {
-                var alreadyAssigned = await _uow.Evaluations
-                    .AlreadyEvaluatedAsync(jury.Id, submission.Id);
-
-                if (!alreadyAssigned)
+                var assignment = new Evaluation
                 {
-                    var evaluation = new Evaluation
-                    {
-                        Id = Guid.NewGuid(),
-                        SubmissionId = submission.Id,
-                        JuryId = jury.Id,
-                        EvaluatedAt = DateTime.UtcNow
-                    };
-                    await _uow.Evaluations.AddAsync(evaluation);
-                }
+                    Id = Guid.NewGuid(),
+                    SubmissionId = submission.Id,
+                    JuryId = juries[juryIndex].Id,
+                    // Бали залишаємо порожніми (або 0), поки суддя не перевірить
+                    ScoreBackend = 0,
+                    ScoreDatabase = 0,
+                    ScoreFrontend = 0,
+                    ScoreFunctionality = 0,
+                    ScoreUsability = 0,
+                    EvaluatedAt = DateTime.UtcNow
+                };
+                _context.Evaluations.Add(assignment);
             }
+
+            // Переходимо до наступного судді (циклічно)
+            juryIndex = (juryIndex + 1) % juries.Count;
         }
 
-        await _uow.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
-
+    
     public async Task<EvaluationResponseDto> EvaluateAsync(EvaluateSubmissionDto dto)
     {
-        var alreadyEvaluated = await _uow.Evaluations
-            .AlreadyEvaluatedAsync(dto.JuryId, dto.SubmissionId);
+        // 1. Шукаємо призначену роботу (пустишку).
+        // Тобі потрібно буде додати метод GetByJuryAndSubmissionAsync у твій репозиторій,
+        // який поверне сутність Evaluation за цими двома ID.
+        var evaluation = await _uow.Evaluations.GetByJuryAndSubmissionAsync(dto.JuryId, dto.SubmissionId);
 
-        if (alreadyEvaluated)
-            throw new Exception("Ця робота вже оцінена цим журі");
+        // Якщо Адмін не призначав цю роботу цьому судді
+        if (evaluation == null)
+            throw new Exception("Помилка: Ця робота вам не призначена!");
 
-        var evaluation = new Evaluation
-        {
-            Id = Guid.NewGuid(),
-            SubmissionId = dto.SubmissionId,
-            JuryId = dto.JuryId,
-            ScoreBackend = dto.ScoreBackend,
-            ScoreDatabase = dto.ScoreDatabase,
-            ScoreFrontend = dto.ScoreFrontend,
-            ScoreFunctionality = dto.ScoreFunctionality,
-            ScoreUsability = dto.ScoreUsability,
-            Comment = dto.Comment,
-            EvaluatedAt = DateTime.UtcNow
-        };
+        // 2. Перевіряємо, чи суддя вже виставив реальні бали раніше.
+        // Наприклад, перевіряємо, чи коментар вже заповнений, або чи є хоч один бал.
+        if (!string.IsNullOrEmpty(evaluation.Comment)) 
+            throw new Exception("Ця робота вже оцінена цим журі!");
 
-        await _uow.Evaluations.AddAsync(evaluation);
+        // 3. Заповнюємо "пустишку" реальними оцінками
+        evaluation.ScoreBackend = dto.ScoreBackend;
+        evaluation.ScoreDatabase = dto.ScoreDatabase;
+        evaluation.ScoreFrontend = dto.ScoreFrontend;
+        evaluation.ScoreFunctionality = dto.ScoreFunctionality;
+        evaluation.ScoreUsability = dto.ScoreUsability;
+        evaluation.Comment = dto.Comment;
+        evaluation.EvaluatedAt = DateTime.UtcNow;
+
+        // 4. Просто зберігаємо зміни! EF Core сам зрозуміє, що треба зробити UPDATE
         await _uow.SaveChangesAsync();
 
         return await MapToDto(evaluation);
@@ -99,40 +111,71 @@ public class EvaluationService : IEvaluationService
         return result;
     }
 
-    public async Task<IEnumerable<LeaderboardItemDto>> GetLeaderboardAsync(Guid roundId)
+   public async Task<IEnumerable<LeaderBoardItemDto>> GetLeaderboardAsync(Guid roundId)
+{
+    // 1. Отримуємо всі сабміти для цього раунду разом із командою та оцінками
+    var submissions = await _context.Submissions// або _context.Submissions
+        .Include(s => s.Team)
+        .Include(s => s.Evaluations)
+        .Where(s => s.RoundId == roundId)
+        .ToListAsync();
+
+    var leaderboard = new List<LeaderBoardItemDto>();
+
+    // 2. Рахуємо бали для кожної команди
+    foreach (var submission in submissions)
     {
-        var submissions = await _uow.Submissions.GetByRoundIdAsync(roundId);
+        // ВІДФІЛЬТРОВУЄМО "ПУСТИШКИ": беремо тільки ті оцінки, де суддя вже залишив коментар
+        var completedEvaluations = submission.Evaluations
+            .Where(e => !string.IsNullOrEmpty(e.Comment))
+            .ToList();
 
-        var leaderboard = new List<LeaderboardItemDto>();
+        int evaluationsCount = completedEvaluations.Count;
 
-        foreach (var submission in submissions)
+        // Змінні для збереження фінальних балів (за замовчуванням 0)
+        int avgBackend = 0;
+        int avgDatabase = 0;
+        int avgFrontend = 0;
+        int avgFunctionality = 0;
+        int avgUsability = 0;
+        int totalAvgScore = 0;
+
+        // Якщо роботу оцінив хоча б один суддя, рахуємо середнє
+        if (evaluationsCount > 0)
         {
-            var evaluations = await _uow.Evaluations
-                .GetBySubmissionIdAsync(submission.Id);
+            avgBackend = (int)Math.Round(completedEvaluations.Average(e => e.ScoreBackend));
+            avgDatabase = (int)Math.Round(completedEvaluations.Average(e => e.ScoreDatabase));
+            avgFrontend = (int)Math.Round(completedEvaluations.Average(e => e.ScoreFrontend));
+            avgFunctionality = (int)Math.Round(completedEvaluations.Average(e => e.ScoreFunctionality));
+            avgUsability = (int)Math.Round(completedEvaluations.Average(e => e.ScoreUsability));
 
-            var evalList = evaluations.ToList();
-            if (!evalList.Any()) continue;
-
-            var team = await _context.Teams.FindAsync(submission.TeamId);
-
-            leaderboard.Add(new LeaderboardItemDto
-            {
-                TeamId = submission.TeamId,
-                TeamName = team?.Name ?? string.Empty,
-                AverageScore = evalList.Average(e =>
-                    e.ScoreBackend + e.ScoreDatabase +
-                    e.ScoreFrontend + e.ScoreFunctionality +
-                    e.ScoreUsability),
-                TotalEvaluations = evalList.Count,
-                ScoreBackend = evalList.Average(e => e.ScoreBackend),
-                ScoreDatabase = evalList.Average(e => e.ScoreDatabase),
-                ScoreFrontend = evalList.Average(e => e.ScoreFrontend),
-                ScoreFunctionality = evalList.Average(e => e.ScoreFunctionality),
-                ScoreUsability = evalList.Average(e => e.ScoreUsability)
-            });
+            // Загальний бал - це сума середніх балів за всіма критеріями
+            totalAvgScore = avgBackend + avgDatabase + avgFrontend + avgFunctionality + avgUsability;
         }
 
-        return leaderboard.OrderByDescending(l => l.AverageScore);
+        // 3. Заповнюємо DTO всіма розрахованими полями
+        leaderboard.Add(new LeaderBoardItemDto
+        {
+            TeamId = submission.TeamId,
+            TeamName = submission.Team?.Name ?? "Невідома команда",
+            SubmissionId = submission.Id,
+            AverageScore = totalAvgScore,
+            TotalEvaluations = evaluationsCount,
+            ScoreBackend = avgBackend,
+            ScoreDatabase = avgDatabase,
+            ScoreFrontend = avgFrontend,
+            ScoreFunctionality = avgFunctionality,
+            ScoreUsability = avgUsability
+        });
+    }
+
+    // 4. Сортуємо від переможців (найбільший бал) до тих, хто набрав менше
+    return leaderboard.OrderByDescending(x => x.AverageScore).ToList();
+}
+
+    public Task<Evaluation?> GetByJuryAndSubmissionAsync(Guid juryId, Guid submissionId)
+    {
+        throw new NotImplementedException();
     }
 
     public Task<IEnumerable<EvaluationResponseDto>> GetEvaluationsBySubmissionIdAsync(Guid submissionId)
