@@ -5,7 +5,7 @@ namespace TournamentPlatform.Application.Interfaces;
 
 public interface ISubmissionService
 {
-    Task<SubmissionResponseDto> SubmitAsync(CreateSubmissionDto dto);
+    Task<SubmissionResponseDto> SubmitAsync(CreateSubmissionDto dto, Guid currentUserId);
     Task<SubmissionResponseDto> UpdateAsync(Guid id, CreateSubmissionDto dto);
     Task<IEnumerable<SubmissionResponseDto>> GetByRoundIdAsync(Guid roundId);
     Task LockSubmissionsAsync(Guid roundId);

@@ -1,3 +1,4 @@
+using TournamentPlatform.Application.DTO.Team;
 using TournamentPlatform.Application.DTO.Tournament;
 using TournamentPlatform.Domain.Enums;
 
@@ -10,4 +11,5 @@ public interface ITournamentService
     Task<IEnumerable<TournamentResponseDto>> GetAllAsync();
     Task<TournamentResponseDto?> GetByIdAsync(Guid id);
     Task<TournamentResponseDto> UpdateStatusAsync(Guid id, TournamentStatus status);
+    
 }

@@ -8,4 +8,7 @@ public interface ITeamService
 {
     // Зверни увагу: ми передаємо captainId окремим параметром, бо беремо його з JWT токена
     Task<TeamResponseDto> RegisterTeamAsync(CreateTeamDto dto, Guid captainId);
+    Task<IEnumerable<TeamResponseDto>> GetTeamsByTournamentAsync(Guid tournamentId);
+    Task AddMemberAsync(AddTeamMemberDto dto, Guid currentUserId);
+    Task<IEnumerable<TeamMemberResponseDto>> GetTeamMembersAsync(Guid teamId);
 }

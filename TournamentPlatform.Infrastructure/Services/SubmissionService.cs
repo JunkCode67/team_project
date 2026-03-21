@@ -5,7 +5,7 @@ using TournamentPlatform.Application.Interfaces;
 using TournamentPlatform.Domain.Entities;
 using TournamentPlatform.Domain.Enums;
 using TournamentPlatform.Infrastructure.Persistence;
-
+namespace TournamentPlatform.Infrastructure.Services;
 
 
 public class SubmissionService : ISubmissionService
@@ -19,8 +19,15 @@ public class SubmissionService : ISubmissionService
         _context = context;
     }
 
-    public async Task<SubmissionResponseDto> SubmitAsync(CreateSubmissionDto dto)
+    public async Task<SubmissionResponseDto> SubmitAsync(CreateSubmissionDto dto,Guid currentUserId)
     {
+        var isMember = await _context.TeamMembers
+            .AnyAsync(tm => tm.TeamId == dto.TeamId && tm.UserId == currentUserId);
+
+        if (!isMember)
+            throw new Exception("Ви не є учасником цієї команди і не можете відправляти за неї рішення!");
+
+        // Далі йде твій ідеальний код:
         var round = await _context.Rounds.FindAsync(dto.RoundId);
         if (round == null)
             throw new Exception("Раунд не знайдено");

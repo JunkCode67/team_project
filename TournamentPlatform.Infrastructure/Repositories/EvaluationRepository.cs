@@ -13,7 +13,11 @@ public class EvaluationRepository : GenericRepository<Evaluation>
             .Include(e => e.Jury)
             .Where(e => e.SubmissionId == submissionId)
             .ToListAsync();
-
+    public async Task<Evaluation?> GetByJuryAndSubmissionAsync(Guid juryId, Guid submissionId)
+    {
+        return await _context.Evaluations
+            .FirstOrDefaultAsync(e => e.JuryId == juryId && e.SubmissionId == submissionId);
+    }
     public async Task<bool> AlreadyEvaluatedAsync(Guid juryId, Guid submissionId)
         => await _context.Evaluations
             .AnyAsync(e => e.JuryId == juryId && e.SubmissionId == submissionId);

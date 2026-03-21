@@ -1,3 +1,4 @@
+using TournamentPlatform.Application.DTO.Team;
 using TournamentPlatform.Application.DTO.Tournament;
 using TournamentPlatform.Application.Interfaces;
 using TournamentPlatform.Domain.Entities;
@@ -60,6 +61,7 @@ public class TournamentService : ITournamentService
 
         return MapToDto(tournament);
     }
+    
 
     private static TournamentResponseDto MapToDto(Tournament t) => new()
     {
