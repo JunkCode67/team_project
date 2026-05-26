@@ -8,7 +8,6 @@ public class SubmissionResponseDto
     public Guid Id { get; set; }
     public Guid TeamId { get; set; }
     
-    // Саме цих полів вам зараз не вистачає:
     public string TeamName { get; set; } = string.Empty;
     public Guid RoundId { get; set; }
     public string GitHubUrl { get; set; } = string.Empty;
