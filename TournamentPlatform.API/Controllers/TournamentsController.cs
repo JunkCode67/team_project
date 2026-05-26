@@ -8,7 +8,6 @@ namespace TournamentPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
 public class TournamentsController : ControllerBase
 {
     private readonly ITournamentService _tournamentService;

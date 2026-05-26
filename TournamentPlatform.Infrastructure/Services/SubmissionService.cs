@@ -27,7 +27,6 @@ public class SubmissionService : ISubmissionService
         if (!isMember)
             throw new Exception("Ви не є учасником цієї команди і не можете відправляти за неї рішення!");
 
-        // Далі йде твій ідеальний код:
         var round = await _context.Rounds.FindAsync(dto.RoundId);
         if (round == null)
             throw new Exception("Раунд не знайдено");

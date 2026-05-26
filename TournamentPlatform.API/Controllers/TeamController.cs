@@ -8,7 +8,7 @@ namespace TournamentPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Обов'язково вимагаємо токен, щоб знати, хто створює команду
+[Authorize]
 public class TeamsController : ControllerBase
 {
     private readonly ITeamService _teamService;
@@ -30,7 +30,6 @@ public class TeamsController : ControllerBase
     {
         try
         {
-            // Витягуємо ID користувача з токена (він стане капітаном)
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid captainId))
@@ -38,21 +37,18 @@ public class TeamsController : ControllerBase
                 return Unauthorized(new { message = "Не вдалося визначити користувача. Перевірте токен авторизації." });
             }
 
-            // Передаємо DTO та ID капітана в сервіс
             var result = await _teamService.RegisterTeamAsync(dto, captainId);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            // Якщо команда з такою назвою вже є, або турнір не знайдено
             return BadRequest(new { message = ex.Message });
         }
     }
     [HttpPost("members")]
-    [Authorize] // Запит може робити тільки авторизований юзер
+    [Authorize] 
     public async Task<IActionResult> AddMember([FromBody] AddTeamMemberDto dto)
     {
-        // Витягуємо ID юзера з його JWT токена
         var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdString, out Guid currentUserId))
         {

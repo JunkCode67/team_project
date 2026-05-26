@@ -6,7 +6,6 @@ public class EvaluateSubmissionDto
 {
     public Guid SubmissionId { get; set; }
     
-    // Це поле ми заповнюємо в контролері з токена
     public Guid JuryId { get; set; } 
 
     [Range(0, 100, ErrorMessage = "Бал за Backend має бути від 0 до 100.")]

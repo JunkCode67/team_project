@@ -7,7 +7,7 @@ public class TeamResponseDto
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public Guid TournamentId { get; set; }
-    public Guid CaptainId { get; set; } // Щоб фронтенд знав, хто лідер
+    public Guid CaptainId { get; set; } 
 
     public string Organization { get; set; } = string.Empty;
     public string? ContactTelegram { get; set; }

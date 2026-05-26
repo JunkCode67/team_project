@@ -8,12 +8,11 @@ namespace TournamentPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Вимагаємо токен для доступу до методів
+[Authorize] 
 public class SubmissionsController : ControllerBase
 {
     private readonly ISubmissionService _submissionService;
 
-    // Впровадження залежності (DI) нашого сервісу
     public SubmissionsController(ISubmissionService submissionService)
     {
         _submissionService = submissionService;
@@ -23,10 +22,8 @@ public class SubmissionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateSubmission([FromBody] CreateSubmissionDto dto)
     {
-        // 1. Читаємо токен і витягуємо ID юзера
         var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     
-        // 2. Якщо токена немає, або він кривий - кажемо "До побачення"
         if (!Guid.TryParse(userIdString, out Guid currentUserId))
         {
             return Unauthorized(new { message = "Не вдалося ідентифікувати користувача з токена." });
@@ -34,7 +31,6 @@ public class SubmissionsController : ControllerBase
 
         try
         {
-            // 3. Тепер передаємо ОБИДВА параметри: і дані (dto), і ID юзера (currentUserId)
             var result = await _submissionService.SubmitAsync(dto, currentUserId);
             return Ok(result);
         }
@@ -45,12 +41,11 @@ public class SubmissionsController : ControllerBase
     }
 
     [HttpGet("round/{roundId:guid}")]
-    [AllowAnonymous] // Наприклад, дозволяємо дивитися роботи без авторизації
+    [AllowAnonymous] 
     public async Task<IActionResult> GetByRound(Guid roundId)
     {
         var submissions = await _submissionService.GetByRoundIdAsync(roundId);
         return Ok(submissions);
     }
     
-    // Сюди ж можна додати GetById та інші методи з інтерфейсу
 }

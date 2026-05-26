@@ -7,7 +7,7 @@ namespace TournamentPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Захищаємо API токеном
+[Authorize] 
 public class RoundsController : ControllerBase
 {
     private readonly IRoundService _roundService;
@@ -17,9 +17,7 @@ public class RoundsController : ControllerBase
         _roundService = roundService;
     }
 
-    // Створення нового раунду
     [HttpPost]
-    // [Authorize(Roles = "Admin")] // Зазвичай раунди створюють тільки адміни
     public async Task<IActionResult> CreateRound([FromBody] CreateRoundDto dto)
     {
         try
@@ -33,9 +31,8 @@ public class RoundsController : ControllerBase
         }
     }
 
-    // Отримання всіх раундів для конкретного турніру
     [HttpGet("tournament/{tournamentId:guid}")]
-    [AllowAnonymous] // Дозволяємо дивитися раунди всім 
+    [AllowAnonymous] 
     public async Task<IActionResult> GetByTournament(Guid tournamentId)
     {
         var rounds = await _roundService.GetByTournamentIdAsync(tournamentId);
