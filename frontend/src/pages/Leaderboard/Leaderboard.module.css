@@ -1,0 +1,111 @@
+.boardContainer {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  padding: 16px 24px;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.teamRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.teamRow:hover {
+  background-color: #f3f4f6;
+}
+
+.rank {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.teamName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.totalScore {
+  font-size: 18px;
+  font-weight: 800;
+  color: #2563eb; /* Синий акцент для тотала */
+  text-align: right;
+}
+
+/* Стили для раскрывающегося блока */
+.detailsPanel {
+  background-color: #f8fafc;
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  animation: slideDown 0.3s ease-out;
+}
+
+.scoresGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.scoreCard {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.scoreLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.scoreValue {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.juryComment {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.juryComment span {
+  font-weight: 700;
+  color: #111827;
+  display: block;
+  margin-bottom: 4px;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,50 @@
+.tabsContainer {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 40px;
+  overflow-x: auto; /* Включаем скролл, если карточек много */
+  padding-bottom: 8px; /* Отступ для красивого скроллбара */
+}
+
+/* Скрываем стандартный уродливый скроллбар в Chrome/Safari */
+.tabsContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background-color: white;
+  cursor: pointer;
+  min-width: 220px; /* Минимальная ширина вкладки */
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Стиль для выбранной вкладки (черная рамка) */
+.tab.active {
+  border-color: #111827;
+  box-shadow: 0 0 0 1px #111827;
+}
+
+.tabHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.tabDesc {
+  font-size: 13px;
+  color: #6b7280;
+}

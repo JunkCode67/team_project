@@ -1,0 +1,62 @@
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden; /* Чтобы картинка не вылезала за скругленные углы */
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.image {
+  height: 128px;
+  width: 100%;
+  object-fit: cover; /* Картинка заполняет блок, не сплющиваясь */
+}
+
+.content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Растягивает блок, выталкивая "Teams" в самый низ */
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.description {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  
+  /* Хитрый трюк: обрезаем текст после 2-й строки и добавляем троеточие */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.footer {
+  margin-top: auto; /* Прижимает текст к низу карточки */
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}

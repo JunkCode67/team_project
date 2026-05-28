@@ -1,0 +1,50 @@
+.appContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  margin-left: 256px; /* Отступ ровно на ширину нашего Sidebar */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pagePadding {
+  padding: 40px;
+}
+
+.heroTitle {
+  font-size: 36px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.heroDesc {
+  font-size: 18px;
+  color: #4b5563;
+  margin-bottom: 48px;
+  max-width: 768px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sectionDesc {
+  color: #4b5563;
+  margin-bottom: 24px;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Три колонки одинаковой ширины */
+  gap: 24px; /* Расстояние между карточками */
+}
