@@ -4,8 +4,6 @@ import styles from './Login.module.css';
 
 function Login({ setUserRole }) {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,10 +37,7 @@ function Login({ setUserRole }) {
   };
 
   // Вот эти функции ты случайно удалил:
-  const [error, setError] = useState('');
 
-  // Ініціалізуємо хук для перенаправлення
-  const navigate = useNavigate();
 
   // Справжня функція для класичного входу
   const handleStandardLogin = async (e) => {

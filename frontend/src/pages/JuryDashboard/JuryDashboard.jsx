@@ -27,7 +27,7 @@ function JuryDashboard() {
 
       try {
         // Отримуємо список робіт (можливо, тобі знадобиться змінити на /api/Submissions/round/{roundId})
-        const response = await fetch('http://localhost:8080/api/Submissions', {
+        const response = await fetch('http://localhost:5058/api/Submissions/round/3db74585-0eb0-411b-9727-783595744789', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
