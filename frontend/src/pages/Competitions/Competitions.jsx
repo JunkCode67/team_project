@@ -5,47 +5,6 @@ import FilterTabs from '../../components/FilterTabs/FilterTabs';
 import CompetitionCard from '../../components/CompetitionCard/CompetitionCard';
 
 function Competitions() {
-  const [tournaments, setTournaments] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTournaments = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        setError('Щоб побачити турніри, потрібно увійти в систему.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch('http://localhost:5058/api/Tournaments', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setTournaments(data);
-        } else if (response.status === 401) {
-          setError('Сесія закінчилась. Будь ласка, увійдіть знову.');
-          localStorage.removeItem('token');
-        } else {
-          setError('Не вдалося завантажити список змагань.');
-        }
-      } catch (err) {
-        setError('Помилка з\'єднання з сервером.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTournaments();
-  }, []);
-
   return (
     <main className={styles.pagePadding}>
       <h1 className={styles.heroTitle}>Competitions and Hackathons</h1>
