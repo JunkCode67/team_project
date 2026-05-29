@@ -72,7 +72,7 @@ function JuryDashboard() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/Evaluations/evaluate', {
+      const response = await fetch('http://localhost:5058/api/Evaluations/evaluate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

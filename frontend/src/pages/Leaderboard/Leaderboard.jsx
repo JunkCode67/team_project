@@ -22,7 +22,7 @@ function Leaderboard() {
 
       try {
         // Уточни точний роут у своєму бекенді. Можливо це /api/Submissions/leaderboard
-        const response = await fetch('http://localhost:8080/api/Evaluations/leaderboard', {
+        const response = await fetch('http://localhost:5058/api/Evaluations/leaderboard', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

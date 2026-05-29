@@ -37,7 +37,7 @@ function AdminPanel() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/Tournaments', {
+      const response = await fetch('http://localhost:5058/api/Tournaments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

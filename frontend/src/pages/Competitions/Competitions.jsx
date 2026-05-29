@@ -20,7 +20,7 @@ function Competitions() {
       }
 
       try {
-        const response = await fetch('http://localhost:8080/api/Tournaments', {
+        const response = await fetch('http://localhost:5058/api/Tournaments', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`

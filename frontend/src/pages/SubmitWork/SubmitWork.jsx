@@ -35,7 +35,7 @@ function SubmitWork() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/Submissions', {
+      const response = await fetch('http://localhost:5058/api/Submissions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
