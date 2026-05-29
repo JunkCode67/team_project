@@ -140,3 +140,22 @@
 .divider::after {
   margin-left: 16px;
 }
+
+.toggleContainer {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.toggleLink {
+  color: #2563eb;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: color 0.2s;
+}
+
+.toggleLink:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}

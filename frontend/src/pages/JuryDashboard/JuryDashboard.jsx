@@ -1,31 +1,101 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './JuryDashboard.module.css';
 import appStyles from '../../App.module.css';
 
-// Тестовые данные (придут с бэка)
-const ASSIGNED_PROJECTS = [
-  { id: 1, team: "Code Crusaders", status: "pending", github: "https://github.com", youtube: "https://youtube.com" },
-  { id: 2, team: "Null Pointers", status: "evaluated", github: "https://github.com", youtube: "https://youtube.com" },
-  { id: 3, team: "Runtime Terrors", status: "pending", github: "https://github.com", youtube: "https://youtube.com" }
-];
-
 function JuryDashboard() {
-  // Какую команду сейчас оцениваем (null = показываем список)
+  // Стейт для списку робіт з бекенду
+  const [assignedProjects, setAssignedProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Стейт для обраного проекту та повідомлень
   const [selectedProject, setSelectedProject] = useState(null);
+  const [message, setMessage] = useState({ text: '', type: '' });
 
-  // Состояния для ползунков оценок
+  // Стани для повзунків оцінок
   const [scores, setScores] = useState({ backend: 0, frontend: 0, database: 0, functionality: 0 });
   const [comment, setComment] = useState('');
 
-  // Обновление конкретного ползунка
+  // Завантажуємо роботи при відкритті сторінки
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setMessage({ text: 'Будь ласка, увійдіть у систему.', type: 'error' });
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Отримуємо список робіт (можливо, тобі знадобиться змінити на /api/Submissions/round/{roundId})
+        const response = await fetch('http://localhost:5058/api/Submissions/round/3db74585-0eb0-411b-9727-783595744789', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setAssignedProjects(data);
+        } else {
+          setMessage({ text: 'Помилка завантаження списку робіт.', type: 'error' });
+        }
+      } catch (error) {
+        setMessage({ text: 'Помилка з\'єднання з сервером.', type: 'error' });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmissions();
+  }, []);
+
+  // Оновлення конкретного повзунка
   const handleScoreChange = (category, value) => {
     setScores(prev => ({ ...prev, [category]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // Відправка оцінки на бекенд
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Оценка для ${selectedProject.team} сохранена!`);
-    setSelectedProject(null); // Возвращаемся к списку после сохранения
+    setMessage({ text: '', type: '' });
+
+    const token = localStorage.getItem('token');
+    
+    // Вираховуємо середній бал з 4 критеріїв
+    const averageScore = Math.round(
+      (parseInt(scores.backend) + parseInt(scores.frontend) + parseInt(scores.database) + parseInt(scores.functionality)) / 4
+    );
+
+    // Формуємо об'єкт для EvaluateDto
+    const evaluationData = {
+      submissionId: selectedProject.id,
+      score: averageScore, // Або передавай об'єкт з усіма 4 оцінками, якщо твій бекенд це підтримує
+      comment: comment
+    };
+
+    try {
+      const response = await fetch('http://localhost:5058/api/Evaluations/evaluate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(evaluationData)
+      });
+
+      if (response.ok) {
+        setMessage({ text: `✅ Оцінку для ${selectedProject.teamName || 'команди'} збережено!`, type: 'success' });
+        setSelectedProject(null); // Повертаємось до списку
+        
+        // Очищаємо форму для наступних оцінок
+        setScores({ backend: 0, frontend: 0, database: 0, functionality: 0 });
+        setComment('');
+        
+        // Тут в ідеалі треба перезапросити список робіт, щоб оновити їх статус на "Evaluated"
+      } else {
+        setMessage({ text: '❌ Помилка збереження оцінки.', type: 'error' });
+      }
+    } catch (error) {
+      setMessage({ text: '❌ Сервер не відповідає.', type: 'error' });
+    }
   };
 
   return (
@@ -33,45 +103,63 @@ function JuryDashboard() {
       <h1 className={appStyles.heroTitle}>⚖️ Jury Dashboard</h1>
       <p className={appStyles.heroDesc}>
         {selectedProject 
-          ? `Evaluating: ${selectedProject.team}` 
+          ? `Evaluating: ${selectedProject.teamName || 'Project ' + selectedProject.id}` 
           : 'Please evaluate the projects assigned to you.'}
       </p>
 
-      {/* ЕСЛИ ПРОЕКТ НЕ ВЫБРАН -> ПОКАЗЫВАЕМ СПИСОК КАРТОЧЕК */}
-      {!selectedProject ? (
-        <div className={styles.projectsGrid}>
-          {ASSIGNED_PROJECTS.map(proj => (
-            <div 
-              key={proj.id} 
-              className={styles.projectCard}
-              onClick={() => setSelectedProject(proj)}
-            >
-              <div className={styles.teamName}>{proj.team}</div>
-              <div className={proj.status === 'evaluated' ? styles.statusDone : styles.statusPending}>
-                {proj.status === 'evaluated' ? '✅ Evaluated' : '⏳ Pending'}
-              </div>
-            </div>
-          ))}
+      {/* Вивід повідомлень */}
+      {message.text && (
+        <div style={{ 
+          padding: '15px', marginBottom: '20px', borderRadius: '8px', 
+          backgroundColor: message.type === 'error' ? '#fce8e6' : '#e6f4ea',
+          color: message.type === 'error' ? '#d93025' : '#137333'
+        }}>
+          {message.text}
         </div>
+      )}
+
+      {/* ЯКЩО ПРОЕКТ НЕ ОБРАНО -> ПОКАЗУЄМО СПИСОК */}
+      {!selectedProject ? (
+        loading ? (
+          <p>Завантаження робіт...</p>
+        ) : assignedProjects.length === 0 ? (
+          <p>Наразі немає робіт для оцінювання.</p>
+        ) : (
+          <div className={styles.projectsGrid}>
+            {assignedProjects.map(proj => (
+              <div 
+                key={proj.id} 
+                className={styles.projectCard}
+                onClick={() => setSelectedProject(proj)}
+                style={{ cursor: 'pointer' }}
+              >
+                {/* Використовуй правильні поля з твого DTO, наприклад proj.teamName */}
+                <div className={styles.teamName}>{proj.teamName || `Submission #${proj.id}`}</div>
+                <div className={proj.isEvaluated ? styles.statusDone : styles.statusPending}>
+                  {proj.isEvaluated ? '✅ Evaluated' : '⏳ Pending'}
+                </div>
+              </div>
+            ))}
+          </div>
+        )
       ) : (
-        /* ЕСЛИ ПРОЕКТ ВЫБРАН -> ПОКАЗЫВАЕМ ФОРМУ ОЦЕНКИ */
+        /* ЯКЩО ПРОЕКТ ОБРАНО -> ПОКАЗУЄМО ФОРМУ ОЦІНКИ */
         <div className={styles.evaluationView}>
           <button className={styles.backBtn} onClick={() => setSelectedProject(null)}>
             ← Back to assigned projects
           </button>
 
-          {/* Клибельные ссылки на работы */}
           <div className={styles.linksBox}>
-            <a href={selectedProject.github} target="_blank" className={`${styles.linkBtn} ${styles.githubLink}`}>
+            {/* Підставляй лінки, якщо вони є в твоєму SubmissionDto */}
+            <a href={selectedProject.githubUrl || "#"} target="_blank" rel="noreferrer" className={`${styles.linkBtn} ${styles.githubLink}`}>
               View GitHub Repo
             </a>
-            <a href={selectedProject.youtube} target="_blank" className={`${styles.linkBtn} ${styles.youtubeLink}`}>
+            <a href={selectedProject.demoUrl || "#"} target="_blank" rel="noreferrer" className={`${styles.linkBtn} ${styles.youtubeLink}`}>
               Watch Demo Video
             </a>
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Рендерим 4 ползунка */}
             {['backend', 'frontend', 'database', 'functionality'].map((category) => (
               <div key={category} className={styles.sliderGroup}>
                 <div className={styles.sliderHeader}>
@@ -88,7 +176,6 @@ function JuryDashboard() {
               </div>
             ))}
 
-            {/* Комментарий Жюри */}
             <div style={{ marginBottom: '24px' }}>
               <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px' }}>Jury Comment</label>
               <textarea 

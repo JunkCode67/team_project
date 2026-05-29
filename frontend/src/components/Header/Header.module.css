@@ -1,79 +1,72 @@
-.headerContainer {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 32px;
+  padding: 16px 32px;
   background-color: white;
   border-bottom: 1px solid #e5e7eb;
+  height: 72px; /* Фиксированная высота шапки */
+  box-sizing: border-box;
 }
 
-.searchWrapper {
-  flex: 1;
-  max-width: 768px;
-  position: relative;
+.searchContainer {
   display: flex;
   align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 400px; /* Ширина поиска */
 }
 
 .searchIcon {
-  position: absolute;
-  left: 16px;
-  color: #6b7280;
-  width: 20px;
-  height: 20px;
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 .searchInput {
-  width: 100%;
-  padding: 10px 16px 10px 48px;
-  background-color: #f3f4f6;
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  color: #111827;
-  font-size: 16px;
+  border: none;
+  background: transparent;
   outline: none;
-  transition: all 0.2s ease;
+  width: 100%;
+  font-size: 14px;
 }
 
-/* Эффект при клике на строку поиска */
-.searchInput:focus {
-  background-color: white;
-  border-color: #d1d5db;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Легкое синее свечение */
-}
-
-.actions {
+.authButtons {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-left: 24px;
+  gap: 16px;
 }
 
 .signInBtn {
-  background: none;
-  border: none;
-  color: #374151;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.signInBtn:hover {
-  color: black;
-}
-
-.registerBtn {
-  background-color: black;
+  background-color: #111827;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
   transition: background-color 0.2s;
 }
 
-.registerBtn:hover {
-  background-color: #1f2937;
+.signInBtn:hover {
+  background-color: #374151;
+}
+
+/* Стили для круглой аватарки */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #111827;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
 }

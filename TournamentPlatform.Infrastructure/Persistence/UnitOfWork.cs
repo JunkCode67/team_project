@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TournamentPlatform.Domain.Interfaces;
 using TournamentPlatform.Infrastructure.Repositories;
 

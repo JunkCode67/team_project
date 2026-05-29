@@ -1,46 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Leaderboard.module.css';
 import appStyles from '../../App.module.css';
 
-// Временные данные (потом это прилетит по API от бэкендеров)
-const MOCK_TEAMS = [
-  {
-    id: 1,
-    rank: 1,
-    name: "Code Crusaders",
-    total: 385,
-    scores: { backend: 95, frontend: 98, database: 92, functionality: 100 },
-    comment: "Шикарная архитектура! Фронтенд выглядит очень современно, а бэкенд выдержал все нагрузочные тесты."
-  },
-  {
-    id: 2,
-    rank: 2,
-    name: "Null Pointers",
-    total: 340,
-    scores: { backend: 85, frontend: 70, database: 90, functionality: 95 },
-    comment: "Хорошая логика, но интерфейс немного недоработан. База данных спроектирована грамотно."
-  },
-  {
-    id: 3,
-    rank: 3,
-    name: "Runtime Terrors",
-    total: 290,
-    scores: { backend: 60, frontend: 80, database: 70, functionality: 80 },
-    comment: "Проект работает, но есть серьезные баги в маршрутизации на бэкенде. Дизайн приятный."
-  }
-];
-
 function Leaderboard() {
-  // Эта переменная хранит ID команды, которую мы сейчас развернули (null = ничего не открыто)
+  const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
+  // Змінна для збереження ID розгорнутої команди
   const [expandedTeamId, setExpandedTeamId] = useState(null);
 
-  // Функция для клика: если кликнули на открытую - закрываем, иначе открываем новую
+  // Завантажуємо таблицю лідерів при відкритті сторінки
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Будь ласка, увійдіть у систему, щоб побачити результати.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Уточни точний роут у своєму бекенді. Можливо це /api/Submissions/leaderboard
+        const response = await fetch('http://localhost:5058/api/Evaluations/leaderboard/3db74585-0eb0-411b-9727-783595744789', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Сортуємо команди за загальним балом (від найбільшого до найменшого)
+          // Заміни "totalScore" на те поле, яке реально повертає твій DTO
+          const sortedData = data.sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
+          
+          setTeams(sortedData);
+        } else {
+          setError('Не вдалося завантажити таблицю лідерів.');
+        }
+      } catch (err) {
+        setError('Помилка з\'єднання з сервером.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
+
   const toggleRow = (id) => {
-    if (expandedTeamId === id) {
-      setExpandedTeamId(null);
-    } else {
-      setExpandedTeamId(id);
-    }
+    setExpandedTeamId(expandedTeamId === id ? null : id);
   };
 
   return (
@@ -50,63 +60,87 @@ function Leaderboard() {
         Final standings and detailed jury evaluations for the current hackathon.
       </p>
 
+      {/* Повідомлення про помилки */}
+      {error && (
+        <div style={{ color: '#d93025', padding: '15px', marginBottom: '20px', borderRadius: '8px', backgroundColor: '#fce8e6' }}>
+          {error}
+        </div>
+      )}
+
       <div className={styles.boardContainer}>
-        {/* Шапка таблицы */}
+        {/* Шапка таблиці */}
         <div className={styles.headerRow}>
           <div>Rank</div>
           <div>Team Name</div>
           <div style={{ textAlign: 'right' }}>Total Score</div>
         </div>
 
-        {/* Перебираем команды и рисуем строки */}
-        {MOCK_TEAMS.map((team) => (
-          <div key={team.id}>
-            
-            {/* Сама строка команды */}
-            <div 
-              className={styles.teamRow} 
-              onClick={() => toggleRow(team.id)}
-            >
-              <div className={styles.rank}>
-                {team.rank === 1 ? '🥇 1' : team.rank === 2 ? '🥈 2' : team.rank === 3 ? '🥉 3' : team.rank}
-              </div>
-              <div className={styles.teamName}>{team.name}</div>
-              <div className={styles.totalScore}>{team.total}</div>
-            </div>
+        {/* Стан завантаження */}
+        {loading ? (
+          <div style={{ padding: '20px', textAlign: 'center' }}>Підраховуємо бали...</div>
+        ) : !error && teams.length === 0 ? (
+          <div style={{ padding: '20px', textAlign: 'center' }}>Поки що немає оцінених робіт.</div>
+        ) : (
+          /* Перебираємо команди з бази */
+          teams.map((team, index) => {
+            // Автоматично вираховуємо місце (index + 1)
+            const rank = index + 1;
 
-            {/* Детализация (показывается только если ID совпадает) */}
-            {expandedTeamId === team.id && (
-              <div className={styles.detailsPanel}>
+            return (
+              <div key={team.id}>
                 
-                <div className={styles.scoresGrid}>
-                  <div className={styles.scoreCard}>
-                    <div className={styles.scoreLabel}>Backend</div>
-                    <div className={styles.scoreValue}>{team.scores.backend}</div>
+                {/* Сама строка команди */}
+                <div 
+                  className={styles.teamRow} 
+                  onClick={() => toggleRow(team.id)}
+                >
+                  <div className={styles.rank}>
+                    {rank === 1 ? '🥇 1' : rank === 2 ? '🥈 2' : rank === 3 ? '🥉 3' : rank}
                   </div>
-                  <div className={styles.scoreCard}>
-                    <div className={styles.scoreLabel}>Frontend</div>
-                    <div className={styles.scoreValue}>{team.scores.frontend}</div>
-                  </div>
-                  <div className={styles.scoreCard}>
-                    <div className={styles.scoreLabel}>Database</div>
-                    <div className={styles.scoreValue}>{team.scores.database}</div>
-                  </div>
-                  <div className={styles.scoreCard}>
-                    <div className={styles.scoreLabel}>Functionality</div>
-                    <div className={styles.scoreValue}>{team.scores.functionality}</div>
-                  </div>
+                  {/* Перевір, як називається поле з іменем команди в твоєму DTO (напр. teamName) */}
+                  <div className={styles.teamName}>{team.teamName || `Team #${team.id}`}</div>
+                  <div className={styles.totalScore}>{team.totalScore || 0}</div>
                 </div>
 
-                <div className={styles.juryComment}>
-                  <span>💬 Jury Comment:</span>
-                  {team.comment}
-                </div>
+                {/* Деталізація (показується тільки якщо ID збігається) */}
+                {expandedTeamId === team.id && (
+                  <div className={styles.detailsPanel}>
+                    
+                    {/* Якщо твій бекенд повертає детальні оцінки (scores), виводь їх. 
+                        Якщо він повертає тільки одну загальну оцінку, цей блок можна прибрати або змінити */}
+                    {team.scores && (
+                      <div className={styles.scoresGrid}>
+                        <div className={styles.scoreCard}>
+                          <div className={styles.scoreLabel}>Backend</div>
+                          <div className={styles.scoreValue}>{team.scores.backend || 0}</div>
+                        </div>
+                        <div className={styles.scoreCard}>
+                          <div className={styles.scoreLabel}>Frontend</div>
+                          <div className={styles.scoreValue}>{team.scores.frontend || 0}</div>
+                        </div>
+                        <div className={styles.scoreCard}>
+                          <div className={styles.scoreLabel}>Database</div>
+                          <div className={styles.scoreValue}>{team.scores.database || 0}</div>
+                        </div>
+                        <div className={styles.scoreCard}>
+                          <div className={styles.scoreLabel}>Functionality</div>
+                          <div className={styles.scoreValue}>{team.scores.functionality || 0}</div>
+                        </div>
+                      </div>
+                    )}
 
+                    <div className={styles.juryComment}>
+                      <span>💬 Jury Comment:</span>
+                      {team.juryComment || team.comment || "Журі ще не залишило коментар."}
+                    </div>
+
+                  </div>
+                )}
+                
               </div>
-            )}
-            
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </main>
   );

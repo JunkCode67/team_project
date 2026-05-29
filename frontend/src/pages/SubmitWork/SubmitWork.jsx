@@ -8,14 +8,55 @@ function SubmitWork() {
   const [youtube, setYoutube] = useState('');
   const [description, setDescription] = useState('');
   
-  // Имитация дедлайна (потом будете получать статус с бэкенда)
-  const isDeadlinePassed = false; // Поменяй на true для теста блокировки!
+  // Состояние для вывода сообщений пользователю
+  const [message, setMessage] = useState({ text: '', type: '' });
+  
+  // Имитация дедлайна (в будущем можно проверять по дате текущего турнира)
+  const isDeadlinePassed = false; 
 
-  // Функция, которая сработает при нажатии на Submit
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Останавливает стандартную перезагрузку страницы браузером
-    alert('Работа успешно отправлена! 🚀');
-    // Тут потом ваши бэкендеры попросят добавить fetch/axios запрос к их API
+  // Функция отправки данных на бэкенд
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage({ text: '', type: '' }); // Очищаем старые сообщения
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setMessage({ text: '⚠️ Ошибка: Вы не авторизованы. Пожалуйста, войдите в систему.', type: 'error' });
+      return;
+    }
+
+    // Формируем объект данных. 
+    // ВАЖНО: Убедись, что названия полей совпадают с твоим SubmissionDto в C#!
+    const submissionData = {
+      githubUrl: github,
+      videoUrl: youtube, // или demoUrl (проверь в своем DTO)
+      description: description,
+      // roundId: 1 // Если твой бэкенд требует ID раунда или турнира, добавь его сюда
+    };
+
+    try {
+      const response = await fetch('http://localhost:5058/api/Submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Прикрепляем JWT токен
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      if (response.ok) {
+        setMessage({ text: '✅ Работа успешно отправлена! 🚀', type: 'success' });
+        // Очищаем форму после успешной отправки
+        setGithub('');
+        setYoutube('');
+        setDescription('');
+      } else {
+        // Если статус 400 (Bad Request) или 500
+        setMessage({ text: '❌ Ошибка при отправке работы. Проверьте данные.', type: 'error' });
+      }
+    } catch (error) {
+      setMessage({ text: '❌ Ошибка соединения с сервером.', type: 'error' });
+    }
   };
 
   return (
@@ -26,6 +67,20 @@ function SubmitWork() {
       </p>
 
       <div className={styles.formContainer}>
+        {/* Вывод сообщения об успехе или ошибке API */}
+        {message.text && (
+          <div style={{ 
+            padding: '15px', 
+            marginBottom: '20px', 
+            borderRadius: '8px', 
+            backgroundColor: message.type === 'error' ? '#fce8e6' : '#e6f4ea',
+            color: message.type === 'error' ? '#d93025' : '#137333',
+            border: `1px solid ${message.type === 'error' ? '#fad2cf' : '#ceead6'}`
+          }}>
+            {message.text}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           
           <div className={styles.inputGroup}>
@@ -75,7 +130,7 @@ function SubmitWork() {
 
           {/* Сообщение об ошибке появляется только если дедлайн прошел */}
           {isDeadlinePassed && (
-            <div className={styles.statusMessage}>
+            <div className={styles.statusMessage} style={{ color: '#d93025', marginTop: '10px' }}>
               Прием работ закрыт. Вы больше не можете изменить или отправить проект.
             </div>
           )}

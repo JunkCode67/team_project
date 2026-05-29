@@ -1,7 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
-function Sidebar() {
+function Sidebar({ userRole }) {
+  // Получаем текущий путь (например, '/' или '/leaderboard')
+  const location = useLocation();
+  const path = location.pathname;
+
   return (
     <div className={styles.sidebar}>
       
@@ -10,39 +14,57 @@ function Sidebar() {
         <span className={styles.logoText}>HackPlatform</span>
       </div>
 
-      <button className={styles.createBtn}>
-        <span style={{ fontSize: '20px', lineHeight: 1 }}>+</span>
-        <span>New Project</span>
-      </button>
+      {/* Кнопка создания проекта ведет на /create */}
+      {userRole === 'participant' && (
+        <Link to="/create" style={{ textDecoration: 'none' }}>
+          <button className={styles.createBtn}>
+            <span style={{ fontSize: '20px', lineHeight: 1 }}>+</span>
+            <span>New Project</span>
+          </button>
+        </Link>
+      )}
 
       <nav className={styles.navMenu}>
         
-        {/* --- ОСНОВНОЕ МЕНЮ --- */}
         <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '16px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Main
         </div>
         
-        <Link to="/" className={styles.navItem}>🏠 Home</Link>
-        {/* Временно вешаем active на соревнования */}
-        <Link to="/" className={`${styles.navItem} ${styles.active}`}>🏆 Competitions</Link>
-        <Link to="/leaderboard" className={styles.navItem}>📊 Leaderboard</Link>
+        <a href="#" className={styles.navItem}>🏠 Home</a>
         
-        {/* --- МЕНЮ УЧАСТНИКА --- */}
-        <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '24px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Participant
-        </div>
-        <a href="#" className={styles.navItem}>👥 My Team</a>
-        <Link to="/submit" className={styles.navItem}>📤 Submit Work</Link>
+        {/* Подсвечиваем, если мы на главной */}
+        <Link to="/" className={`${styles.navItem} ${path === '/' ? styles.active : ''}`}>
+          🏆 Competitions
+        </Link>
+        
+        {/* Подсвечиваем, если мы на /leaderboard */}
+        <Link to="/leaderboard" className={`${styles.navItem} ${path === '/leaderboard' ? styles.active : ''}`}>
+          📊 Leaderboard
+        </Link>
+        
+        {userRole === 'participant' && (
+          <>
+            <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '24px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Participant
+            </div>
+            <Link to="/team" className={`${styles.navItem} ${path === '/team' ? styles.active : ''}`}>👥 My Team</Link>
+            <Link to="/submit" className={`${styles.navItem} ${path === '/submit' ? styles.active : ''}`}>📤 Submit Work</Link>
+          </>
+        )}
 
-        {/* --- МЕНЮ ЖЮРИ / АДМИНА --- */}
-        <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '24px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Management
-        </div>
+        {(userRole === 'jury' || userRole === 'admin') && (
+          <>
+            <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#9ca3af', marginBottom: '8px', marginTop: '24px', padding: '0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Management
+            </div>
+            <Link to="/jury" className={`${styles.navItem} ${path === '/jury' ? styles.active : ''}`}>⚖️ Jury Dashboard</Link>
+            {userRole === 'admin' && (
+              <Link to="/admin" className={`${styles.navItem} ${path === '/admin' ? styles.active : ''}`}>⚙️ Admin Panel</Link>
+            )}
+          </>
+        )}
 
-        <Link to="/jury" className={styles.navItem}>⚖️ Jury Dashboard</Link>
-        <Link to="/admin" className={styles.navItem}>⚙️ Admin Panel</Link>
       </nav>
-      
     </div>
   );
 }

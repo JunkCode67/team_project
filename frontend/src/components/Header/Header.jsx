@@ -1,29 +1,34 @@
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
 
-function Header() {
+function Header({ userRole }) {
+  const navigate = useNavigate();
+
   return (
-    <header className={styles.headerContainer}>
-      
-      <div className={styles.searchWrapper}>
-        <div className={styles.searchIcon}>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
-        </div>
-        
-        <input
-          type="text"
-          placeholder="Search"
+    <header className={styles.header}>
+      <div className={styles.searchContainer}>
+        <span className={styles.searchIcon}>🔍</span>
+        <input 
+          type="text" 
+          placeholder="Search competitions, datasets..." 
           className={styles.searchInput}
         />
       </div>
-
-      <div className={styles.actions}>
-        <Link to="/login" className={styles.signInBtn}>Sign In</Link>
-        <button className={styles.registerBtn}>Register</button>
-      </div>
       
+      <div className={styles.authButtons}>
+        {userRole !== 'guest' ? (
+          // Теперь аватарка перекидывает на /profile
+          <div 
+            className={styles.avatar} 
+            onClick={() => navigate('/profile')}
+            title="Go to Profile"
+          >
+            {userRole === 'admin' ? 'A' : userRole === 'jury' ? 'J' : 'P'}
+          </div>
+        ) : (
+          <Link to="/login" className={styles.signInBtn}>Sign In</Link>
+        )}
+      </div>
     </header>
   );
 }
