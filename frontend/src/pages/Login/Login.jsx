@@ -7,7 +7,9 @@ function Login({ setUserRole }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -37,6 +39,37 @@ function Login({ setUserRole }) {
   };
 
   // Вот эти функции ты случайно удалил:
+  const [error, setError] = useState('');
+
+  // Ініціалізуємо хук для перенаправлення
+  const navigate = useNavigate();
+
+  // Справжня функція для класичного входу
+  const handleStandardLogin = async (e) => {
+    e.preventDefault(); // Щоб сторінка не перезавантажувалась
+    setError(''); // Очищаємо попередні помилки
+
+    try {
+      const response = await fetch('http://localhost:8080/api/Auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Зберігаємо токен у пам'ять браузера
+        localStorage.setItem('token', data.token); 
+        // Перекидаємо користувача на сторінку змагань
+        navigate('/'); 
+      } else {
+        setError('Неправильний email або пароль');
+      }
+    } catch (err) {
+      setError('Помилка з\'єднання з сервером');
+    }
+  };
+
   const handleGoogleLogin = () => {
     console.log('Redirecting to Google Auth...');
   };
@@ -104,6 +137,7 @@ function Login({ setUserRole }) {
 
         <div className={styles.divider}>OR</div>
 
+        {/* --- КНОПКИ СОЦМЕРЕЖ --- */}
         <button className={`${styles.authBtn} ${styles.googleBtn}`} onClick={handleGoogleLogin}>
           <span style={{ fontSize: '20px' }}>🌐</span>
           Continue with Google
