@@ -1,17 +1,40 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 
 function Login() {
-  // Состояния для хранения почты и пароля
+  // Стейт для пошти, пароля та помилок
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  // Функция для классического входа
-  const handleStandardLogin = (e) => {
-    e.preventDefault(); // Чтобы страница не перезагружалась
-    console.log('Отправляем на бэкенд:', { email, password });
-    alert(`Пытаемся войти под почтой: ${email}`);
-    // Тут будет fetch/axios запрос к вашему API
+  // Ініціалізуємо хук для перенаправлення
+  const navigate = useNavigate();
+
+  // Справжня функція для класичного входу
+  const handleStandardLogin = async (e) => {
+    e.preventDefault(); // Щоб сторінка не перезавантажувалась
+    setError(''); // Очищаємо попередні помилки
+
+    try {
+      const response = await fetch('http://localhost:8080/api/Auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Зберігаємо токен у пам'ять браузера
+        localStorage.setItem('token', data.token); 
+        // Перекидаємо користувача на сторінку змагань
+        navigate('/'); 
+      } else {
+        setError('Неправильний email або пароль');
+      }
+    } catch (err) {
+      setError('Помилка з\'єднання з сервером');
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -30,7 +53,14 @@ function Login() {
         <h1 className={styles.title}>Welcome back</h1>
         <p className={styles.subtitle}>Sign in to your account to continue</p>
 
-        {/* --- ФОРМА ДЛЯ EMAIL И ПАРОЛЯ --- */}
+        {/* --- ВИВІД ПОМИЛКИ --- */}
+        {error && (
+          <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center', fontSize: '14px' }}>
+            {error}
+          </div>
+        )}
+
+        {/* --- ФОРМА ДЛЯ EMAIL ТА ПАРОЛЯ --- */}
         <form className={styles.form} onSubmit={handleStandardLogin}>
           <input 
             type="email" 
@@ -53,10 +83,10 @@ function Login() {
           </button>
         </form>
 
-        {/* Разделитель */}
+        {/* Розділювач */}
         <div className={styles.divider}>OR</div>
 
-        {/* --- КНОПКИ СОЦСЕТЕЙ --- */}
+        {/* --- КНОПКИ СОЦМЕРЕЖ --- */}
         <button className={`${styles.authBtn} ${styles.googleBtn}`} onClick={handleGoogleLogin}>
           <span style={{ fontSize: '20px' }}>🌐</span>
           Continue with Google
