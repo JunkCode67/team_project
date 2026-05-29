@@ -1,0 +1,79 @@
+.profileCard {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.avatarBig {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: #111827;
+  color: white;
+  font-size: 36px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+/* Цвета для разных ролей */
+.roleAdmin { background-color: #fee2e2; color: #991b1b; }
+.roleJury { background-color: #e0e7ff; color: #3730a3; }
+.roleParticipant { background-color: #d1fae5; color: #065f46; }
+
+.infoGroup {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logoutBtn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin-top: 16px;
+}
+
+.logoutBtn:hover {
+  background-color: #dc2626;
+}
